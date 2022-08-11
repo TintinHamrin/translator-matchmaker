@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TranslatorPage from "./TranslatorPage";
+import TranslatorForm from "./TranslatorForm";
 import {
   ApolloClient,
   InMemoryCache,
@@ -31,6 +32,7 @@ root.render(
             path="/translator/:lastName"
             element={<TranslatorPage />}
           ></Route>
+          <Route path="/translator-form" element={<TranslatorForm />}></Route>
         </Routes>
       </BrowserRouter>
     </ApolloProvider>

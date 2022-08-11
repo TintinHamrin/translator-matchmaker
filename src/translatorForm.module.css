@@ -1,0 +1,17 @@
+.formBody {
+  display: flex;
+  justify-content: center;
+}
+
+.formWrapper {
+  background-color: beige;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 500px;
+  padding: 1rem 1rem 1rem 1rem;
+}
+
+.iconButton {
+  background-color: white;
+}
