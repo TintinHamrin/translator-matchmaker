@@ -1,11 +1,21 @@
 import { PrismaClient } from "@prisma/client";
 import { ApolloServer } from "apollo-server";
 import "reflect-metadata";
-import { buildSchema, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  buildSchema,
+  Field,
+  InputType,
+  Mutation,
+  Query,
+  Resolver,
+} from "type-graphql";
 import { TranslatorModel } from "./prisma/generated/type-graphql";
 import path from "path";
+import { TranslatorResolver } from "./resolvers";
 
 const prisma = new PrismaClient();
+// console.log(prisma);
 
 export async function main() {
   const schema = await buildSchema({
@@ -17,6 +27,7 @@ export async function main() {
   const server = new ApolloServer({
     schema,
     context: () => ({ prisma }),
+    // introspection: true,
   });
 
   server
@@ -25,15 +36,10 @@ export async function main() {
     })
     .then(() => {
       console.log("listening");
+    })
+    .catch(() => {
+      console.log("error connecting");
     });
 }
 
-@Resolver((of) => TranslatorModel)
-class TranslatorResolver {
-  @Query((returns) => [TranslatorModel])
-  async translators() {
-    return await prisma.translatorModel.findMany();
-  }
-}
-
-main().catch((e) => console.error(e.details));
+main(); //.catch((e) => console.error);

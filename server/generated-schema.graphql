@@ -3,6 +3,10 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Mutation {
+  createOneTranslatorModel(data: TranslatorModelCreateInput!): TranslatorModel!
+}
+
 type Query {
   translators: [TranslatorModel!]!
 }
@@ -12,6 +16,14 @@ type TranslatorModel {
   email: String!
   experience: Int!
   id: Int!
+  language: String!
+  name: String
+}
+
+input TranslatorModelCreateInput {
+  certified: Boolean!
+  email: String!
+  experience: Int!
   language: String!
   name: String
 }

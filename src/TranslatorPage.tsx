@@ -1,9 +1,16 @@
 import React, { useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { IconButton } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 function TranslatorPage() {
+  const navigate = useNavigate();
   const { lastName } = useParams();
+
+  const backHandler = () => {
+    navigate("/");
+  };
 
   const GET_TRANSLATORS = gql`
     query translators {
@@ -22,7 +29,13 @@ function TranslatorPage() {
     console.log(data);
   }
 
-  return <div>TranslatorPage {lastName}.</div>;
+  return (
+    <>
+      <IconButton onClick={backHandler}>
+        <ArrowBackIcon style={{ color: "white", fontSize: 40 }} />
+      </IconButton>
+    </>
+  );
 }
 
 export default TranslatorPage;

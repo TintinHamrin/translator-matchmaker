@@ -24,6 +24,5 @@
     "experimentalDecorators": true
   },
   "include": [
-    "src", "server"
-, "prisma", "/**/*.ts"  ]
+    "src"]
 }
