@@ -6,6 +6,8 @@ import { Button, dividerClasses, IconButton, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 import { gql, useMutation, useQuery } from "@apollo/client";
+import { Prisma, TranslatorModel } from "@prisma/client";
+import { TranslatorModelCreateInput } from "../server/prisma/generated/type-graphql";
 
 function TranslatorForm() {
   const navigate = useNavigate();
@@ -15,7 +17,8 @@ function TranslatorForm() {
   const experienceRef = useRef<HTMLInputElement>();
   const tagsRef = useRef<HTMLInputElement>();
   const certifiedRef = useRef<HTMLInputElement>();
-  let translatorData; //TODO type
+  //let translatorData: TranslatorModel; //TODO type
+  let translatorData: TranslatorModelCreateInput; //TODO type
 
   const backHandler = () => {
     navigate("/");
@@ -25,7 +28,6 @@ function TranslatorForm() {
     mutation CreateOneTranslatorModel($data: TranslatorModelCreateInput!) {
       createOneTranslatorModel(data: $data) {
         email
-        id
         name
         language
         experience
@@ -42,13 +44,14 @@ function TranslatorForm() {
   function save() {
     console.log("saving");
     translatorData = {
-      name: nameRef.current?.value,
-      email: emailRef.current?.value,
-      language: languageRef.current?.value,
+      name: nameRef.current!.value,
+      email: emailRef.current!.value,
+      language: languageRef.current!.value,
       experience: parseInt(experienceRef.current!.value),
       // tags: tagsRef.current?.value,
       certified: !!certifiedRef.current?.value,
     };
+
     addTodo({ variables: { data: translatorData } });
   }
 

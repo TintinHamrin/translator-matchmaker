@@ -16,7 +16,7 @@ function App() {
 
   useEffect(() => {
     axios.get("https://dummyjson.com/users?limit=10").then((response) => {
-      console.log("translators", response);
+      // console.log("translators", response);
       setTranslators(response.data.users);
     });
   }, []);
