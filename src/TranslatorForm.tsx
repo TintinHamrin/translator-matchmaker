@@ -2,9 +2,10 @@ import React, { ChangeEvent, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import classes from "./translatorForm.module.css";
-import { Button, IconButton, Typography } from "@mui/material";
+import { Button, dividerClasses, IconButton, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
+import { gql, useMutation, useQuery } from "@apollo/client";
 
 function TranslatorForm() {
   const navigate = useNavigate();
@@ -14,27 +15,41 @@ function TranslatorForm() {
   const experienceRef = useRef<HTMLInputElement>();
   const tagsRef = useRef<HTMLInputElement>();
   const certifiedRef = useRef<HTMLInputElement>();
-  // const [name, setName] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [language, setLanguage] = useState("");
-  // const [experience, setExperience] = useState("");
-  // const [tags, setTags] = useState("");
+  let translatorData; //TODO type
 
   const backHandler = () => {
     navigate("/");
   };
 
+  const ADD_TRANSLATOR = gql`
+    mutation CreateOneTranslatorModel($data: TranslatorModelCreateInput!) {
+      createOneTranslatorModel(data: $data) {
+        email
+        id
+        name
+        language
+        experience
+        certified
+      }
+    }
+  `;
+
+  const [addTodo, { data, loading, error }] = useMutation(ADD_TRANSLATOR);
+
+  if (loading) return <div>"Submitting..."</div>;
+  if (error) return <div>`Submission error! ${error.message}`</div>;
+
   function save() {
     console.log("saving");
-    const data = {
+    translatorData = {
       name: nameRef.current?.value,
       email: emailRef.current?.value,
       language: languageRef.current?.value,
-      experience: experienceRef.current?.value,
-      tags: tagsRef.current?.value,
-      certifiedRef: certifiedRef.current?.value,
+      experience: parseInt(experienceRef.current!.value),
+      // tags: tagsRef.current?.value,
+      certified: !!certifiedRef.current?.value,
     };
-    console.log("saved", data);
+    addTodo({ variables: { data: translatorData } });
   }
 
   return (
@@ -56,28 +71,22 @@ function TranslatorForm() {
             required
             id="standard-required"
             label="Full name"
-            //   defaultValue="Hello World"
             variant="standard"
             inputRef={nameRef}
-            //onChange={(e) => setName(e.target.value)}
           />
           <TextField
             required
             id="standard-required"
             label="Language"
-            //   defaultValue="Hello World"
             variant="standard"
             inputRef={languageRef}
-            //onChange={(e) => setName(e.target.value)}
           />
           <TextField
             required
             id="standard"
             label="Email"
-            //   defaultValue="Hello World"
             variant="standard"
             inputRef={emailRef}
-            // onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             id="standard-number"
@@ -88,7 +97,6 @@ function TranslatorForm() {
             }}
             variant="standard"
             inputRef={experienceRef}
-            // onChange={(e) => onExperienceChange(e)}
           />
           <TextField
             id="standard-search"
@@ -96,7 +104,6 @@ function TranslatorForm() {
             type="search"
             variant="standard"
             inputRef={tagsRef}
-            // onChange={(e) => onTagsChange(e)}
           />
           <TextField
             id="standard-search"
@@ -104,7 +111,6 @@ function TranslatorForm() {
             type="text"
             variant="standard"
             inputRef={certifiedRef}
-            // onChange={(e) => onTagsChange(e)}
           />
           <Button onClick={save}>Submit</Button>
           <Button>Reset All Fields</Button>
