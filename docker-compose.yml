@@ -6,10 +6,3 @@ services:
     - .env.production
     ports:
       - "3000:3000"
-
-  backend:
-    build: .
-    env_file:
-    - .env.production
-    ports:
-      - "3000:3000"

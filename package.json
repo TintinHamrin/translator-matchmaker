@@ -26,6 +26,7 @@
     "axios": "^0.27.2",
     "browserify-zlib": "^0.2.0",
     "class-validator": "^0.13.2",
+    "concurrently": "^7.3.0",
     "fs": "^0.0.1-security",
     "graphql": "^15.3.0",
     "graphql-fields": "^2.0.3",
@@ -44,7 +45,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start-frontend": "react-scripts start",
+    "start-server": " cd ./server && npm run start",
+    "start-all": "concurrently \"npm run start-server\" \"npm run start-frontend\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
